@@ -1,3 +1,3 @@
 const loadElementTag = document.createElement("a");
-loadElementTag.href = "./dashboard/index.html";
+loadElementTag.href = "./orders/index.html";
 loadElementTag.click();

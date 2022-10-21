@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <title>Freddy's Candy Shop Dashboard</title>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <img src="../assets/logo.svg" alt="Logo" />
+        <ul>
+          <li>Dashboard</li>
+          <li>Orders</li>
+          <li>Logout</li>
+        </ul>
+      </nav>
+      <div id="content">
+        <header>
+          <h1>Orders</h1>
+          <div class="search_bar">
+            <input type="text" />
+          </div>
+        </header>
+        <table>
+          <colgroup>
+            <col span="1" />
+            <col span="1" />
+            <col span="1" />
+            <col span="1" />
+          </colgroup>
+          <tr>
+            <th>Product Name</th>
+            <th>Date</th>
+            <th>Price</th>
+            <th>Status</th>
+          </tr>
+          <tr>
+            <td>Item 1</td>
+            <td>20th October, 2022</td>
+            <td>$ 20.30</td>
+            <td>Processing</td>
+          </tr>
+        </table>
+        <div id="order_pagination">Page <span>1</span> of <span>3</span></div>
+      </div>
+    </main>
+  </body>
+</html>
