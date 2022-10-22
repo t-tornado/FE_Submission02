@@ -14,14 +14,14 @@
           <li>Logout</li>
         </ul>
       </nav>
-      <div id="content">
+      <div class="content" id="content">
         <header>
           <h1>Orders</h1>
           <div class="search_bar">
             <input type="text" />
           </div>
         </header>
-        <table>
+        <table id="orders-table">
           <colgroup>
             <col span="1" />
             <col span="1" />
@@ -34,15 +34,12 @@
             <th>Price</th>
             <th>Status</th>
           </tr>
-          <tr>
-            <td>Item 1</td>
-            <td>20th October, 2022</td>
-            <td>$ 20.30</td>
-            <td>Processing</td>
-          </tr>
         </table>
-        <div id="order_pagination">Page <span>1</span> of <span>3</span></div>
+        <div class="order_pagination">
+          Page <span>1</span> of <span>3</span>
+        </div>
       </div>
     </main>
+    <script type="text/javascript" src="orders.js"></script>
   </body>
 </html>
