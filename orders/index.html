@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="https://use.fontawesome.com/704c372a78.js"></script>
     <link rel="stylesheet" href="index.css" />
     <title>Freddy's Candy Shop Dashboard</title>
   </head>
@@ -18,25 +19,44 @@
         <header>
           <h1>Orders</h1>
           <div class="search_bar">
+            <i class="fa fa-search" aria-hidden="true"></i>
             <input type="text" />
           </div>
         </header>
-        <table id="orders-table">
-          <colgroup>
-            <col span="1" />
-            <col span="1" />
-            <col span="1" />
-            <col span="1" />
-          </colgroup>
-          <tr>
-            <th>Product Name</th>
-            <th>Date</th>
-            <th>Price</th>
-            <th>Status</th>
-          </tr>
-        </table>
-        <div class="order_pagination">
-          Page <span>1</span> of <span>3</span>
+        <div class="table_n_pagination_wrapper">
+          <div class="table_container">
+            <table id="orders-table">
+              <colgroup>
+                <col span="1" />
+                <col span="1" />
+                <col span="1" />
+                <col span="1" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>Product Name</th>
+                  <th>Date</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="order_pagination">
+            <i
+              onclick="previousOrdersPage()"
+              class="fa fa-caret-left"
+              aria-hidden="true"
+            ></i>
+            Page <span id="pagination-start">1</span> of
+            <span id="pagination-end">3</span
+            ><i
+              onclick="nextOrdersPage()"
+              class="fa fa-caret-right"
+              aria-hidden="true"
+            ></i>
+          </div>
         </div>
       </div>
     </main>

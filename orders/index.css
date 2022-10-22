@@ -11,6 +11,7 @@ main {
   width: 100%;
   display: flex;
   flex-direction: row;
+  overflow-y: hidden;
 }
 
 nav {
@@ -43,6 +44,7 @@ nav > ul > li {
   width: calc(100% - 150px);
   margin: auto;
   padding: 0 50px;
+  overflow-y: auto;
 }
 
 .search_bar {
@@ -66,17 +68,29 @@ header {
 
 table {
   width: 100%;
+}
+
+tbody > tr {
+  height: 63px;
+}
+
+.table_n_pagination_wrapper {
+  height: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.table_container {
+  height: 95%;
+  width: 100%;
   border: 1px solid #a9a9a9;
-  padding: 20px;
+  padding: 10px;
 }
 
 tr:has(th) {
   text-align: left;
   height: 40px;
-}
-
-tr {
-  height: 50px;
 }
 
 col {
@@ -85,9 +99,10 @@ col {
   text-align: left;
 }
 
-#order_pagination {
+.order_pagination {
   display: flex;
   column-gap: 4px;
+  height: 5%;
 }
 
 .hide {
@@ -108,4 +123,17 @@ col {
 
 .order_pagination {
   margin-top: 7px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  column-gap: 3px;
+}
+
+.order_pagination > span {
+  font-weight: 800;
+}
+
+.order_pagination > i {
+  font-size: 20px;
+  margin-left: 5px;
 }
