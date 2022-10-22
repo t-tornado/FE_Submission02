@@ -214,6 +214,25 @@ const orders = [
 ];
 
 /**
+ * @SEARCHINTERFACE
+ */
+
+const SearchInterface = {
+  setSearchConfiguration: function (configuration) {
+    window.configuration = configuration;
+  },
+  getSearchConfiguration: function () {
+    return window.configuration;
+  },
+  setSearchResults: function (data) {
+    window.searchResults = data;
+  },
+  getSearchResults: function () {
+    return window.searchResults;
+  },
+};
+
+/**
  * @TABLEINTERFACE
  */
 
@@ -246,25 +265,6 @@ const OrdersTableInterface = {
     tableBody.innerHTML = bodyHTML;
   },
 
-  toNextPage: function (currentPaginationConfig, orders) {
-    const { start, end } = currentPaginationConfig;
-    const updatedPagination = {
-      ...currentPaginationConfig,
-      start: start < end ? start + 1 : end,
-    };
-    this.updatePageOrdersAndPagination(orders, updatedPagination);
-  },
-
-  toPreviousPage: function (currentPaginationConfig, orders) {
-    const { start } = currentPaginationConfig;
-    if (start === 1) return;
-    const updatedPagination = {
-      ...currentPaginationConfig,
-      start: start - 1,
-    };
-    this.updatePageOrdersAndPagination(orders, updatedPagination);
-  },
-
   updatePageOrdersAndPagination: function (orders, updatedPagination) {
     const { start: newStart, itemsPerPage } = updatedPagination;
     const pageOrders = orders.slice(
@@ -288,6 +288,7 @@ const OrdersTableInterface = {
       itemsPerPage,
       start: 1,
       end: Math.ceil(orders.length / itemsPerPage),
+      search: false,
     };
     this.setPaginationConfiguration(pagination);
     this.setPaginationIndexes(pagination);
@@ -298,6 +299,47 @@ const OrdersTableInterface = {
     startElement.innerText = paginationConfig.start;
     const endElement = document.getElementById("pagination-end");
     endElement.innerText = paginationConfig.end;
+  },
+
+  toNextPage: function (currentPaginationConfig, orders) {
+    const { start, end } = currentPaginationConfig;
+    const updatedPagination = {
+      ...currentPaginationConfig,
+      start: start < end ? start + 1 : end,
+    };
+    this.updatePageOrdersAndPagination(orders, updatedPagination);
+  },
+
+  toPreviousPage: function (currentPaginationConfig, orders) {
+    const { start } = currentPaginationConfig;
+    if (start === 1) return;
+    const updatedPagination = {
+      ...currentPaginationConfig,
+      start: start - 1,
+    };
+    this.updatePageOrdersAndPagination(orders, updatedPagination);
+  },
+
+  filterOrdersByKeyword: function (keyword, orders) {
+    // const current
+    const orderResults = orders.filter((order) => {
+      const $keyword = keyword.toLowerCase();
+      const matchOrderName = order.name.toLowerCase().startsWith($keyword);
+      const matchOrderPrice = order.price.toLowerCase().startsWith($keyword);
+      const matchOrderStatus = order.status.toLowerCase().startsWith($keyword);
+      const matchOrderDate = order.date.toLowerCase().startsWith($keyword);
+      if (
+        matchOrderDate ||
+        matchOrderName ||
+        matchOrderPrice ||
+        matchOrderStatus
+      )
+        return true;
+    });
+    OrdersTableInterface.initPaginationConfig(orderResults);
+    SearchInterface.setSearchResults(orderResults);
+    const paginationConfig = { ...window.pagination, start: 1, search: true };
+    this.updatePageOrdersAndPagination(orderResults, paginationConfig);
   },
 };
 
@@ -314,25 +356,45 @@ function suspendPageToLoadingState(contentId) {
 function loadFirstPageOrders(orders) {
   const content = document.getElementById("content");
   const firstPageOrders = orders.slice(0, 10);
+  OrdersTableInterface.initPaginationConfig(orders);
   OrdersTableInterface.createPageOrders(firstPageOrders);
   content.className = ""; // reset content class prop to initiate id style
 }
 
 function nextOrdersPage() {
   const currentPaginationConfig = window.pagination;
-  OrdersTableInterface.toNextPage(currentPaginationConfig, orders);
+  let currentOrders;
+  if (currentPaginationConfig.search) {
+    currentOrders = SearchInterface.getSearchResults();
+  } else {
+    currentOrders = orders;
+  }
+  OrdersTableInterface.toNextPage(currentPaginationConfig, currentOrders);
 }
 
 function previousOrdersPage() {
   const currentPaginationConfig = window.pagination;
-  OrdersTableInterface.toPreviousPage(currentPaginationConfig, orders);
+  let currentOrders;
+  console.log(currentPaginationConfig.search);
+  if (currentPaginationConfig.search) {
+    currentOrders = SearchInterface.getSearchResults();
+  } else {
+    currentOrders = orders;
+  }
+  OrdersTableInterface.toPreviousPage(currentPaginationConfig, currentOrders);
+}
+
+function searchOrders() {
+  const input = document.getElementById("order-search");
+  const keyword = input.value.trim();
+  if (keyword === "") loadFirstPageOrders(orders);
+  OrdersTableInterface.filterOrdersByKeyword(keyword, orders);
 }
 
 async function loadPage() {
   suspendPageToLoadingState(contentId);
   await (function () {
     setTimeout(() => {
-      OrdersTableInterface.initPaginationConfig(orders);
       loadFirstPageOrders(orders);
     }, 2000);
   })();
