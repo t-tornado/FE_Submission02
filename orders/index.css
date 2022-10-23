@@ -1,0 +1,139 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #d3d3d3;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+main {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow-y: hidden;
+}
+
+nav {
+  width: 150px;
+  height: 100%;
+  padding-top: 60px;
+  padding: 40px;
+  border-right: 1px solid #a9a9a9;
+  display: inline-block;
+}
+
+nav > img {
+  height: 100px;
+  width: 100px;
+  object-fit: contain;
+}
+
+nav > ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 40px;
+}
+
+nav > ul > li {
+  margin: 15px 0;
+}
+
+#content {
+  height: 100%;
+  width: calc(100% - 150px);
+  margin: auto;
+  padding: 0 50px;
+  overflow-y: auto;
+}
+
+.search_bar {
+  width: 300px;
+  height: 30px;
+}
+
+.search_bar > input {
+  width: 90%;
+  height: 100%;
+  background-color: transparent;
+  border: 1px solid #00000080;
+}
+
+header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+table {
+  width: 100%;
+}
+
+tbody > tr {
+  height: 60px;
+}
+
+.table_n_pagination_wrapper {
+  height: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.table_container {
+  height: 95%;
+  width: 100%;
+  border: 1px solid #a9a9a9;
+  padding: 10px;
+}
+
+tr:has(th) {
+  text-align: left;
+  height: 40px;
+}
+
+col {
+  width: 24%;
+  padding-left: 0;
+  text-align: left;
+}
+
+.order_pagination {
+  display: flex;
+  column-gap: 4px;
+  height: 5%;
+}
+
+.hide {
+  display: none;
+}
+
+.shipped {
+  color: black;
+}
+
+.delivered {
+  color: green;
+}
+
+.processing {
+  color: red;
+}
+
+.order_pagination {
+  margin-top: 7px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  column-gap: 3px;
+}
+
+.order_pagination > span {
+  font-weight: 800;
+}
+
+.order_pagination > i {
+  font-size: 20px;
+  margin-left: 5px;
+}
