@@ -1,4 +1,13 @@
+import { addEvent } from "../core-modules/events.js";
+import { OrdersComponentsAPI } from "./modules/tableInterface.js";
+import {
+  nextOrdersPage,
+  previousOrdersPage,
+  searchOrders,
+} from "./modules/handlers.js";
+
 const contentId = "content";
+
 //
 const orders = [
   {
@@ -213,141 +222,12 @@ const orders = [
   },
 ];
 
-/**
- * @SEARCHINTERFACE
- */
+// bind modules to global object
+window.nextOrdersPage = nextOrdersPage.bind(this, orders);
+window.previousOrdersPage = previousOrdersPage.bind(this, orders);
+window.searchOrders = searchOrders.bind(this, orders);
 
-const SearchInterface = {
-  setSearchConfiguration: function (configuration) {
-    window.configuration = configuration;
-  },
-  getSearchConfiguration: function () {
-    return window.configuration;
-  },
-  setSearchResults: function (data) {
-    window.searchResults = data;
-  },
-  getSearchResults: function () {
-    return window.searchResults;
-  },
-};
-
-/**
- * @TABLEINTERFACE
- */
-
-const OrdersTableInterface = {
-  id: "orders-table",
-
-  getTableBodyElement: function () {
-    return document.querySelector(`#${OrdersTableInterface.id}>tbody`);
-  },
-
-  clearTableOrders: function () {
-    const tableBody = this.getTableBodyElement();
-    tableBody.innerHTML = "";
-  },
-
-  createPageOrders: function (orders) {
-    const tableBody = this.getTableBodyElement();
-    let bodyHTML = "";
-    orders.forEach((order) => {
-      const orderHTML = `
-      <tr>
-      <td>${order.name}</td>
-      <td>${order.date}</td>
-      <td>${order.price}</td>
-      <td class="${order.status.toLowerCase()}" >${order.status}</td>
-      </tr>
-      `;
-      bodyHTML += orderHTML;
-    });
-    tableBody.innerHTML = bodyHTML;
-  },
-
-  updatePageOrdersAndPagination: function (orders, updatedPagination) {
-    const { start: newStart, itemsPerPage } = updatedPagination;
-    const pageOrders = orders.slice(
-      newStart * itemsPerPage - itemsPerPage,
-      newStart * itemsPerPage
-    );
-    OrdersTableInterface.clearTableOrders();
-    this.createPageOrders(pageOrders);
-    this.setPaginationIndexes(updatedPagination);
-    this.setPaginationConfiguration(updatedPagination);
-  },
-
-  setPaginationConfiguration: function (paginationConfig) {
-    window.pagination = paginationConfig;
-  },
-
-  initPaginationConfig: function (orders) {
-    const itemsPerPage = 10;
-    var pagination = {
-      itemsLength: orders.length,
-      itemsPerPage,
-      start: 1,
-      end: Math.ceil(orders.length / itemsPerPage),
-      search: false,
-    };
-    this.setPaginationConfiguration(pagination);
-    this.setPaginationIndexes(pagination);
-  },
-
-  setPaginationIndexes: function (paginationConfig) {
-    const startElement = document.getElementById("pagination-start");
-    startElement.innerText = paginationConfig.start;
-    const endElement = document.getElementById("pagination-end");
-    endElement.innerText = paginationConfig.end;
-  },
-
-  toNextPage: function (currentPaginationConfig, orders) {
-    const { start, end } = currentPaginationConfig;
-    const updatedPagination = {
-      ...currentPaginationConfig,
-      start: start < end ? start + 1 : end,
-    };
-    this.updatePageOrdersAndPagination(orders, updatedPagination);
-  },
-
-  toPreviousPage: function (currentPaginationConfig, orders) {
-    const { start } = currentPaginationConfig;
-    if (start === 1) return;
-    const updatedPagination = {
-      ...currentPaginationConfig,
-      start: start - 1,
-    };
-    this.updatePageOrdersAndPagination(orders, updatedPagination);
-  },
-
-  filterOrdersByKeyword: function (keyword, orders) {
-    // const current
-    const orderResults = orders.filter((order) => {
-      const $keyword = keyword.toLowerCase();
-      const matchOrderName = order.name.toLowerCase().startsWith($keyword);
-      const matchOrderPrice = order.price.toLowerCase().startsWith($keyword);
-      const matchOrderStatus = order.status.toLowerCase().startsWith($keyword);
-      const matchOrderDate = order.date.toLowerCase().startsWith($keyword);
-      if (
-        matchOrderDate ||
-        matchOrderName ||
-        matchOrderPrice ||
-        matchOrderStatus
-      )
-        return true;
-    });
-    OrdersTableInterface.initPaginationConfig(orderResults);
-    SearchInterface.setSearchResults(orderResults);
-    const paginationConfig = { ...window.pagination, start: 1, search: true };
-    this.updatePageOrdersAndPagination(orderResults, paginationConfig);
-  },
-};
-
-/**
- *
- * @PAGEMETHODS
- */
-
+// page methods
 function suspendPageToLoadingState(contentId) {
   const content = document.getElementById(contentId);
   content.className = "hide";
@@ -356,42 +236,24 @@ function suspendPageToLoadingState(contentId) {
 function loadFirstPageOrders(orders) {
   const content = document.getElementById("content");
   const firstPageOrders = orders.slice(0, 10);
-  OrdersTableInterface.initPaginationConfig(orders);
-  OrdersTableInterface.createPageOrders(firstPageOrders);
+  OrdersComponentsAPI.setupOrdersPagination(orders);
+  OrdersComponentsAPI.createPageOrders(firstPageOrders);
   content.className = ""; // reset content class prop to initiate id style
 }
 
-function nextOrdersPage() {
-  const currentPaginationConfig = window.pagination;
-  let currentOrders;
-  if (currentPaginationConfig.search) {
-    currentOrders = SearchInterface.getSearchResults();
-  } else {
-    currentOrders = orders;
-  }
-  OrdersTableInterface.toNextPage(currentPaginationConfig, currentOrders);
+// event handlers
+function onInputChangeHandler(event) {
+  const currentValue = event.target.value.trim();
+  if (currentValue === "") loadFirstPageOrders(orders);
 }
 
-function previousOrdersPage() {
-  const currentPaginationConfig = window.pagination;
-  let currentOrders;
-  console.log(currentPaginationConfig.search);
-  if (currentPaginationConfig.search) {
-    currentOrders = SearchInterface.getSearchResults();
-  } else {
-    currentOrders = orders;
-  }
-  OrdersTableInterface.toPreviousPage(currentPaginationConfig, currentOrders);
+function initializeEvents() {
+  addEvent("input[id=order-search]", "input", onInputChangeHandler);
 }
 
-function searchOrders() {
-  const input = document.getElementById("order-search");
-  const keyword = input.value.trim();
-  if (keyword === "") loadFirstPageOrders(orders);
-  OrdersTableInterface.filterOrdersByKeyword(keyword, orders);
-}
-
+// main application
 async function loadPage() {
+  initializeEvents();
   suspendPageToLoadingState(contentId);
   await (function () {
     setTimeout(() => {
