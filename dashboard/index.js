@@ -38,7 +38,7 @@ function toggleRevenue(event) {
   const viewYearlyRevenue = event.target.checked;
   const previousChart = ChartStorage.getCachedChart();
   const DashboardRevenueHeaderText = new TextElement(
-    "section[id=revenue__Section] header h2"
+    "section[id=revenue_section] header h2"
   );
   const CanvasBorderElement = new ContainerElement("div.canvas_border");
   destroyChart(previousChart);
