@@ -15,7 +15,7 @@
         </ul>
       </nav>
       <div id="content">
-        <header>Dashboard</header>
+        <header><h1>Dashboard</h1></header>
         <section id="order_summary_section">
           <div class="order_summary_element">
             <span>Today</span>
@@ -30,10 +30,23 @@
             <span>$1456/9 orders</span>
           </div>
         </section>
-        <section id="revenue__Section">
+        <section id="revenue_section">
           <header>
             <h2>Revenue (last 7 days)</h2>
+            <label onclick="" for="check" class="switch">
+              <input
+                onclick="toggleRevenue(event);  event.stopImmediatePropagation();"
+                type="checkbox"
+                name=""
+                id="check"
+              />
+              <span class="slider"></span>
+            </label>
           </header>
+          <div class="canvas_container">
+            <canvas id="revenue-chart" width="800px" height="500px"></canvas>
+            <div class="canvas_border"></div>
+          </div>
         </section>
         <section id="best_sellers_section">
           <h2>Bestsellers</h2>
@@ -60,5 +73,12 @@
         </section>
       </div>
     </main>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+      integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script type="module" src="index.js"></script>
   </body>
 </html>
