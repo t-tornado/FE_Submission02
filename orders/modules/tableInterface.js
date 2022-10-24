@@ -67,13 +67,7 @@ class OrdersComponentsAPI {
     );
   };
 
-  static toPreviousPage = (currentPaginationConfig, orders) => {
-    const { start } = currentPaginationConfig;
-    if (start === 1) return;
-    const updatedPagination = {
-      ...currentPaginationConfig,
-      start: start - 1,
-    };
+  static toPreviousPage = (orders, updatedPagination) => {
     OrdersComponentsAPI.#updatePageOrdersAndPagination(
       orders,
       updatedPagination

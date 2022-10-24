@@ -14,15 +14,16 @@ async function nextOrdersPage() {
   OrdersComponentsAPI.toNextPage(orders, updatedPagination);
 }
 
-function previousOrdersPage(orders) {
+async function previousOrdersPage() {
   const currentPaginationConfig = Configuration.getPaginationConfiguration();
-  let currentOrders;
-  if (currentPaginationConfig.search) {
-    currentOrders = SearchInterface.getSearchResults();
-  } else {
-    currentOrders = orders;
-  }
-  OrdersComponentsAPI.toPreviousPage(currentPaginationConfig, currentOrders);
+  const { start } = currentPaginationConfig;
+  if (start === 1) return;
+  const updatedPagination = {
+    ...currentPaginationConfig,
+    start: start - 1,
+  };
+  const { orders } = await getOrders(updatedPagination.start);
+  OrdersComponentsAPI.toPreviousPage(orders, updatedPagination);
 }
 
 function searchOrders(orders) {
