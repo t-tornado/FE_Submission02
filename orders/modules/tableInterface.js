@@ -16,6 +16,7 @@ class OrdersComponentsAPI {
   static createPageOrders = (orders) => {
     const tableBody = OrdersComponentsAPI.#getTableBodyElement();
     let bodyHTML = "";
+    console.log(orders);
     orders.forEach((order) => {
       const userFriendlyDate = new Date(order.created_at).toDateString();
       const price = `${order.currency} ${order.total}`;
@@ -33,7 +34,6 @@ class OrdersComponentsAPI {
   };
 
   static #updatePageOrdersAndPagination = (pageOrders, updatedPagination) => {
-    console.log(pageOrders);
     OrdersComponentsAPI.#clearTableOrders();
     OrdersComponentsAPI.createPageOrders(pageOrders);
     OrdersComponentsAPI.#setPaginationIndexElements(updatedPagination);
@@ -52,12 +52,22 @@ class OrdersComponentsAPI {
     var pagination = {
       itemsLength: totalOrdersLength,
       itemsPerPage,
-      start: 1,
+      start: totalOrdersLength > 0 ? 1 : totalOrdersLength,
       end: Math.ceil(totalOrdersLength / itemsPerPage),
       search: false,
     };
     Configuration.setPaginationConfiguration(pagination);
     this.#setPaginationIndexElements(pagination);
+  };
+
+  static updateOrdersPagination = (update) => {
+    const updatedPagination = {
+      ...Configuration.getPaginationConfiguration(),
+      ...update,
+    };
+    console.log(updatedPagination);
+    Configuration.setPaginationConfiguration(updatedPagination);
+    this.#setPaginationIndexElements(updatedPagination);
   };
 
   static toNextPage = (orders, updatedPagination) => {
@@ -76,28 +86,6 @@ class OrdersComponentsAPI {
 
   static filterOrdersByKeyword = (keyword, orders) => {
     // const current
-    const orderResults = orders.filter((order) => {
-      const $keyword = keyword.toLowerCase();
-      const matchOrderName = order.name.toLowerCase().startsWith($keyword);
-      const matchOrderPrice = order.price.toLowerCase().startsWith($keyword);
-      const matchOrderStatus = order.status.toLowerCase().startsWith($keyword);
-      const matchOrderDate = order.date.toLowerCase().startsWith($keyword);
-      if (
-        matchOrderDate ||
-        matchOrderName ||
-        matchOrderPrice ||
-        matchOrderStatus
-      )
-        return true;
-    });
-    OrdersComponentsAPI.setupOrdersPagination(orderResults);
-    SearchInterface.setSearchResults(orderResults);
-    const pagination = Configuration.getPaginationConfiguration();
-    const paginationConfig = { ...pagination, start: 1, search: true };
-    OrdersComponentsAPI.#updatePageOrdersAndPagination(
-      orderResults,
-      paginationConfig
-    );
   };
 }
 

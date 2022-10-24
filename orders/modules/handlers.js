@@ -1,6 +1,5 @@
 import { getOrders } from "./api.js";
 import { Configuration } from "./configuration.js";
-import { SearchInterface } from "./searchInterface.js";
 import { OrdersComponentsAPI } from "./tableInterface.js";
 
 async function nextOrdersPage() {
@@ -26,11 +25,4 @@ async function previousOrdersPage() {
   OrdersComponentsAPI.toPreviousPage(orders, updatedPagination);
 }
 
-function searchOrders(orders) {
-  const input = document.getElementById("order-search");
-  const keyword = input.value.trim();
-  if (keyword === "") loadFirstPageOrders(orders);
-  OrdersComponentsAPI.filterOrdersByKeyword(keyword, orders);
-}
-
-export { nextOrdersPage, previousOrdersPage, searchOrders };
+export { nextOrdersPage, previousOrdersPage };

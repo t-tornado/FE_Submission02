@@ -2,13 +2,9 @@ import { addEvent } from "../core-modules/events.js";
 import { OrdersComponentsAPI } from "./modules/tableInterface.js";
 import { getOrders } from "./modules/api.js";
 import { nextOrdersPage, previousOrdersPage } from "./modules/handlers.js";
+import { Configuration } from "./modules/configuration.js";
 
 const contentId = "content";
-
-// bind modules to global object
-window.nextOrdersPage = nextOrdersPage;
-window.previousOrdersPage = previousOrdersPage;
-// window.searchOrders = searchOrders.bind(this, orders);
 
 // page methods
 function suspendPageToLoadingState(contentId) {
@@ -23,13 +19,29 @@ function renderOrders(orders) {
 }
 
 // event handlers
-function onInputChangeHandler(event) {
+async function onInputChangeHandler(event) {
   const currentValue = event.target.value.trim();
-  if (currentValue === "") loadFirstPageOrders(orders);
+  if (currentValue === "") await searchOrders();
 }
 
 function initializeEvents() {
   addEvent("input[id=order-search]", "input", onInputChangeHandler);
+}
+
+async function searchOrders() {
+  const input = document.getElementById("order-search");
+  const keyword = input.value.trim();
+  const { start } = Configuration.getPaginationConfiguration();
+  if (keyword === "") {
+    const { orders, totalLength } = await getOrders(start);
+    OrdersComponentsAPI.setupOrdersPagination(totalLength);
+    renderOrders(orders);
+    return;
+  }
+
+  const { orders, totalLength } = await getOrders(start, keyword);
+  OrdersComponentsAPI.setupOrdersPagination(totalLength);
+  renderOrders(orders);
 }
 
 // main application
@@ -40,6 +52,11 @@ async function loadPage() {
   OrdersComponentsAPI.setupOrdersPagination(totalLength);
   renderOrders(orders);
 }
+
+// bind modules to global object
+window.nextOrdersPage = nextOrdersPage;
+window.previousOrdersPage = previousOrdersPage;
+window.searchOrders = searchOrders;
 
 // Load Page
 loadPage();
