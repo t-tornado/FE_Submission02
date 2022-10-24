@@ -32,12 +32,8 @@ class OrdersComponentsAPI {
     tableBody.innerHTML = bodyHTML;
   };
 
-  static #updatePageOrdersAndPagination = (orders, updatedPagination) => {
-    const { start: newStart, itemsPerPage } = updatedPagination;
-    const pageOrders = orders.slice(
-      newStart * itemsPerPage - itemsPerPage,
-      newStart * itemsPerPage
-    );
+  static #updatePageOrdersAndPagination = (pageOrders, updatedPagination) => {
+    console.log(pageOrders);
     OrdersComponentsAPI.#clearTableOrders();
     OrdersComponentsAPI.createPageOrders(pageOrders);
     OrdersComponentsAPI.#setPaginationIndexElements(updatedPagination);
@@ -64,12 +60,7 @@ class OrdersComponentsAPI {
     this.#setPaginationIndexElements(pagination);
   };
 
-  static toNextPage = (currentPaginationConfig, orders) => {
-    const { start, end } = currentPaginationConfig;
-    const updatedPagination = {
-      ...currentPaginationConfig,
-      start: start < end ? start + 1 : end,
-    };
+  static toNextPage = (orders, updatedPagination) => {
     OrdersComponentsAPI.#updatePageOrdersAndPagination(
       orders,
       updatedPagination

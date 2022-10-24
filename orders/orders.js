@@ -1,11 +1,12 @@
 import { addEvent } from "../core-modules/events.js";
 import { OrdersComponentsAPI } from "./modules/tableInterface.js";
 import { getOrders } from "./modules/api.js";
+import { nextOrdersPage } from "./modules/handlers.js";
 
 const contentId = "content";
 
 // bind modules to global object
-// window.nextOrdersPage = nextOrdersPage.bind(this, orders);
+window.nextOrdersPage = nextOrdersPage;
 // window.previousOrdersPage = previousOrdersPage.bind(this, orders);
 // window.searchOrders = searchOrders.bind(this, orders);
 
