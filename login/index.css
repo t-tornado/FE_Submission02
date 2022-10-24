@@ -47,7 +47,7 @@ form > input {
   padding: 5px;
 }
 
-button {
+input[type="Login"] {
   height: 40px;
   background-color: #fff;
   padding: 5px;
