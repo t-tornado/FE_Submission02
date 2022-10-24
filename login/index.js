@@ -16,7 +16,8 @@ async function loginUser() {
     LoginFormContainer.removeElement("span.error_message");
     LoginFormContainer.appendElement("<div class='loader'></div>");
     const tokens = await login(LoginForm.getFormValues());
-    LocalCache.saveRefreshToken(tokens.refreshToken);
+    LocalCache.saveAccessTokenKey(tokens?.access_token);
+    LocalCache.saveRefreshToken(tokens?.refresh_token);
     navigateFromRoot("dashboard/index.html");
   } catch (error) {
     LoginFormContainer.updateClassName("login_form");

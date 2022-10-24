@@ -17,11 +17,14 @@ class OrdersComponentsAPI {
     const tableBody = OrdersComponentsAPI.#getTableBodyElement();
     let bodyHTML = "";
     orders.forEach((order) => {
+      console.log(order);
+      const userFriendlyDate = new Date(order.created_at).toDateString();
+      const price = `${order.currency} ${order.total}`;
       const orderHTML = `
             <tr>
-            <td>${order.name}</td>
-            <td>${order.date}</td>
-            <td>${order.price}</td>
+            <td>${order.product.name}</td>
+            <td>${userFriendlyDate}</td>
+            <td>${price}</td>
             <td class="${order.status.toLowerCase()}" >${order.status}</td>
             </tr>
             `;
@@ -50,7 +53,7 @@ class OrdersComponentsAPI {
   };
 
   static setupOrdersPagination = (orders) => {
-    const itemsPerPage = 10;
+    const itemsPerPage = 50;
     var pagination = {
       itemsLength: orders.length,
       itemsPerPage,
