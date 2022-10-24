@@ -5,7 +5,13 @@ export class HttpClient {
     return fetch({ url: `${this.base}/${url}`, method: "get" });
   }
 
-  static post(url) {
-    return fetch({ url: `${this.base}/${url}`, method: "post" });
+  static async post(route, params) {
+    const url = `${HttpClient.base}/${route}`;
+    const body = JSON.stringify(params);
+    return await fetch(url, {
+      body,
+      method: "post",
+      headers: { "Content-type": "application/json" },
+    });
   }
 }

@@ -9,9 +9,10 @@ async function loginUser() {
     );
     const formIsValid = LoginForm.validateForm();
     if (!formIsValid) return;
-    await login(LoginForm.getFormValues());
+    const tokens = await login(LoginForm.getFormValues());
+    console.log(tokens);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
 }
 
