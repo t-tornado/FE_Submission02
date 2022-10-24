@@ -1,3 +1,7 @@
+import { ContainerElement, TextElement } from "./elements/index.js";
+import { createChart } from "./modules/chart.js";
+import { ChartStorage } from "./modules/chartConfig.js";
+
 let weeklyRevenueChartLabels = [
   "today",
   "yesterday",
@@ -25,56 +29,33 @@ let yearlyRevenueChartLabels = [
 ];
 let yearlyRevenueValues = [10, 29, 40, 55, 92, 35, 78, 94, 62, 77, 80, 102];
 
-const CanvasChart = document.getElementById("revenue-chart");
+function destroyChart(chart) {
+  if (chart) chart.destroy();
+}
 
-console.log(CanvasChart.children);
+//
+function toggleRevenue(event) {
+  const viewYearlyRevenue = event.target.checked;
+  const previousChart = ChartStorage.getCachedChart();
+  const DashboardRevenueHeaderText = new TextElement(
+    "section[id=revenue__Section] header h2"
+  );
+  const CanvasBorderElement = new ContainerElement("div.canvas_border");
+  destroyChart(previousChart);
 
-new Chart(CanvasChart, {
-  type: "bar",
-  legend: {
-    display: false,
-  },
-  data: {
-    labels: yearlyRevenueChartLabels,
-    datasets: [
-      {
-        backgroundColor: "transparent",
-        data: yearlyRevenueValues,
-        borderWidth: 2,
-        showLine: false,
-      },
-    ],
-  },
-  options: {
-    barPercentage: 0.3,
-    responsive: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false,
-        },
-        ticks: {
-          maxRotation: 45,
-          minRotation: 45,
-        },
-      },
-      y: {
-        grid: {
-          display: false,
-        },
-        ticks: {
-          display: false,
-        },
-        display: false,
-      },
-    },
-    layout: {
-      padding: 3,
-    },
-  },
-});
+  if (viewYearlyRevenue) {
+    CanvasBorderElement.updateStyle({ height: "421.5px" });
+    DashboardRevenueHeaderText.updateText("Revenue (last 12 months)");
+    createChart(yearlyRevenueChartLabels, yearlyRevenueValues);
+  } else {
+    CanvasBorderElement.updateStyle({ height: "425px" });
+    DashboardRevenueHeaderText.updateText("Revenue (last 7 days)");
+    createChart(weeklyRevenueChartLabels, weeklyRevenueValues);
+  }
+}
+
+// bind to global object
+window.toggleRevenue = toggleRevenue;
+
+// on load window
+createChart(weeklyRevenueChartLabels, weeklyRevenueValues);

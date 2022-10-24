@@ -33,6 +33,15 @@
         <section id="revenue__Section">
           <header>
             <h2>Revenue (last 7 days)</h2>
+            <label onclick="" for="check" class="switch">
+              <input
+                onclick="toggleRevenue(event);  event.stopImmediatePropagation();"
+                type="checkbox"
+                name=""
+                id="check"
+              />
+              <span class="slider"></span>
+            </label>
           </header>
           <div class="canvas_container">
             <canvas id="revenue-chart" width="800px" height="500px"></canvas>
@@ -70,6 +79,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script type="text/javascript" src="index.js"></script>
+    <script type="module" src="index.js"></script>
   </body>
 </html>

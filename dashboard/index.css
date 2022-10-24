@@ -13,6 +13,14 @@ main {
   flex-direction: row;
 }
 
+header:has(h2) {
+  width: 400px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .canvas_container {
   position: relative;
 }
@@ -25,13 +33,13 @@ main {
   border-color: #a9a9a9;
   margin-top: 10px;
   width: 800px;
-  height: 420px;
+  height: 425px;
   position: absolute;
   top: 0;
 }
 
 nav {
-  width: 150px;
+  width: 100px;
   height: 100%;
   padding-top: 60px;
   padding: 40px;
@@ -57,8 +65,9 @@ nav > ul > li {
 
 #content {
   height: 100%;
-  width: calc(100% - 150px);
-  display: inline-block;
+  width: calc(100% - 200px);
+  display: flex;
+  flex-direction: column;
 }
 
 .order_summary_element {
@@ -96,4 +105,52 @@ tr:has(th) {
 
 tr > th {
   text-align: left;
+}
+
+.toggle_button_container {
+  column-gap: 50px;
+  margin-bottom: 30px;
+}
+
+.switch {
+  width: 60px;
+  height: 30px;
+  position: relative;
+}
+
+.slider {
+  position: absolute;
+  background: transparent;
+  border: 1px solid #a9a9a9;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: inherit;
+  width: inherit;
+  border-radius: 20px;
+  transition: 0.4s;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 23px;
+  width: 23px;
+  border-radius: 15px;
+  left: 4px;
+  top: 2px;
+  transition: 0.4s;
+  background-color: transparent;
+  border: 1px solid #a9a9a9;
+}
+
+input:checked + .slider::before {
+  transform: translateX(26px);
 }
