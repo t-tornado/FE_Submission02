@@ -16,12 +16,15 @@ class OrdersComponentsAPI {
   static createPageOrders = (orders) => {
     const tableBody = OrdersComponentsAPI.#getTableBodyElement();
     let bodyHTML = "";
+    console.log(orders);
     orders.forEach((order) => {
+      const userFriendlyDate = new Date(order.created_at).toDateString();
+      const price = `${order.currency} ${order.total}`;
       const orderHTML = `
             <tr>
-            <td>${order.name}</td>
-            <td>${order.date}</td>
-            <td>${order.price}</td>
+            <td>${order.product.name}</td>
+            <td>${userFriendlyDate}</td>
+            <td>${price}</td>
             <td class="${order.status.toLowerCase()}" >${order.status}</td>
             </tr>
             `;
@@ -30,12 +33,7 @@ class OrdersComponentsAPI {
     tableBody.innerHTML = bodyHTML;
   };
 
-  static #updatePageOrdersAndPagination = (orders, updatedPagination) => {
-    const { start: newStart, itemsPerPage } = updatedPagination;
-    const pageOrders = orders.slice(
-      newStart * itemsPerPage - itemsPerPage,
-      newStart * itemsPerPage
-    );
+  static #updatePageOrdersAndPagination = (pageOrders, updatedPagination) => {
     OrdersComponentsAPI.#clearTableOrders();
     OrdersComponentsAPI.createPageOrders(pageOrders);
     OrdersComponentsAPI.#setPaginationIndexElements(updatedPagination);
@@ -49,38 +47,37 @@ class OrdersComponentsAPI {
     endElement.innerText = paginationConfig.end;
   };
 
-  static setupOrdersPagination = (orders) => {
-    const itemsPerPage = 10;
+  static setupOrdersPagination = (totalOrdersLength) => {
+    const itemsPerPage = 50;
     var pagination = {
-      itemsLength: orders.length,
+      itemsLength: totalOrdersLength,
       itemsPerPage,
-      start: 1,
-      end: Math.ceil(orders.length / itemsPerPage),
+      start: totalOrdersLength > 0 ? 1 : totalOrdersLength,
+      end: Math.ceil(totalOrdersLength / itemsPerPage),
       search: false,
     };
     Configuration.setPaginationConfiguration(pagination);
     this.#setPaginationIndexElements(pagination);
   };
 
-  static toNextPage = (currentPaginationConfig, orders) => {
-    const { start, end } = currentPaginationConfig;
+  static updateOrdersPagination = (update) => {
     const updatedPagination = {
-      ...currentPaginationConfig,
-      start: start < end ? start + 1 : end,
+      ...Configuration.getPaginationConfiguration(),
+      ...update,
     };
+    console.log(updatedPagination);
+    Configuration.setPaginationConfiguration(updatedPagination);
+    this.#setPaginationIndexElements(updatedPagination);
+  };
+
+  static toNextPage = (orders, updatedPagination) => {
     OrdersComponentsAPI.#updatePageOrdersAndPagination(
       orders,
       updatedPagination
     );
   };
 
-  static toPreviousPage = (currentPaginationConfig, orders) => {
-    const { start } = currentPaginationConfig;
-    if (start === 1) return;
-    const updatedPagination = {
-      ...currentPaginationConfig,
-      start: start - 1,
-    };
+  static toPreviousPage = (orders, updatedPagination) => {
     OrdersComponentsAPI.#updatePageOrdersAndPagination(
       orders,
       updatedPagination
@@ -89,28 +86,6 @@ class OrdersComponentsAPI {
 
   static filterOrdersByKeyword = (keyword, orders) => {
     // const current
-    const orderResults = orders.filter((order) => {
-      const $keyword = keyword.toLowerCase();
-      const matchOrderName = order.name.toLowerCase().startsWith($keyword);
-      const matchOrderPrice = order.price.toLowerCase().startsWith($keyword);
-      const matchOrderStatus = order.status.toLowerCase().startsWith($keyword);
-      const matchOrderDate = order.date.toLowerCase().startsWith($keyword);
-      if (
-        matchOrderDate ||
-        matchOrderName ||
-        matchOrderPrice ||
-        matchOrderStatus
-      )
-        return true;
-    });
-    OrdersComponentsAPI.setupOrdersPagination(orderResults);
-    SearchInterface.setSearchResults(orderResults);
-    const pagination = Configuration.getPaginationConfiguration();
-    const paginationConfig = { ...pagination, start: 1, search: true };
-    OrdersComponentsAPI.#updatePageOrdersAndPagination(
-      orderResults,
-      paginationConfig
-    );
   };
 }
 

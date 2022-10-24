@@ -3,7 +3,10 @@ import { HttpClient } from "../../core-modules/index.js";
 async function login({ username, password }) {
   return new Promise(async (res, rej) => {
     try {
-      const response = await HttpClient.post("login", { username, password });
+      const response = await HttpClient.post("login", {
+        body: { username, password },
+        headers: { "Content-type": "application/json" },
+      });
       if (response.status !== 200) rej(new Error("Failed to login"));
       if (response.status.toString().startsWith("40"))
         rej(new Error("invalid Credentials"));
