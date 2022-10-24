@@ -1,10 +1,5 @@
 import { addEvent } from "../core-modules/events.js";
 import { OrdersComponentsAPI } from "./modules/tableInterface.js";
-import {
-  nextOrdersPage,
-  previousOrdersPage,
-  searchOrders,
-} from "./modules/handlers.js";
 import { getOrders } from "./modules/api.js";
 
 const contentId = "content";
@@ -40,13 +35,9 @@ function initializeEvents() {
 async function loadPage() {
   initializeEvents();
   suspendPageToLoadingState(contentId);
-  const data = await getOrders(1);
-  renderOrders(data);
-  // await (function () {
-  //   setTimeout(() => {
-  //     loadFirstPageOrders(orders);
-  //   }, 2000);
-  // })();
+  const { orders, totalLength } = await getOrders(1);
+  OrdersComponentsAPI.setupOrdersPagination(totalLength);
+  renderOrders(orders);
 }
 
 // Load Page

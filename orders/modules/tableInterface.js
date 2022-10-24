@@ -17,7 +17,6 @@ class OrdersComponentsAPI {
     const tableBody = OrdersComponentsAPI.#getTableBodyElement();
     let bodyHTML = "";
     orders.forEach((order) => {
-      console.log(order);
       const userFriendlyDate = new Date(order.created_at).toDateString();
       const price = `${order.currency} ${order.total}`;
       const orderHTML = `
@@ -52,13 +51,13 @@ class OrdersComponentsAPI {
     endElement.innerText = paginationConfig.end;
   };
 
-  static setupOrdersPagination = (orders) => {
+  static setupOrdersPagination = (totalOrdersLength) => {
     const itemsPerPage = 50;
     var pagination = {
-      itemsLength: orders.length,
+      itemsLength: totalOrdersLength,
       itemsPerPage,
       start: 1,
-      end: Math.ceil(orders.length / itemsPerPage),
+      end: Math.ceil(totalOrdersLength / itemsPerPage),
       search: false,
     };
     Configuration.setPaginationConfiguration(pagination);
