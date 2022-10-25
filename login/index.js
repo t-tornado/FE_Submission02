@@ -28,4 +28,12 @@ async function loginUser() {
   }
 }
 
+function proceedToLoginUser() {
+  const accessToken = LocalCache.getAccessToken();
+  if (accessToken) {
+    navigateFromRoot("dashboard/index.html");
+  }
+}
+
 window.loginUser = loginUser;
+proceedToLoginUser();

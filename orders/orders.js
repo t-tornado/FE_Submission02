@@ -1,10 +1,13 @@
-import { addEvent } from "../core-modules/events.js";
+import { logoutFromApp } from "../shared-modules/index.js";
+import {
+  addEvent,
+  LocalCache,
+  navigateFromRoot,
+} from "../core-modules/index.js";
 import { OrdersComponentsAPI } from "./modules/tableInterface.js";
 import { getOrders } from "./modules/api.js";
 import { nextOrdersPage, previousOrdersPage } from "./modules/handlers.js";
 import { Configuration } from "./modules/configuration.js";
-import { navigateFromRoot } from "../core-modules/domHelperFunctions.js";
-import { logoutFromApp } from "../shared-modules/index.js";
 
 const contentId = "content";
 
@@ -48,6 +51,11 @@ async function searchOrders() {
 }
 
 // main application
+function validateUserBeforeLaunchingApp() {
+  const accessToken = LocalCache.getAccessToken();
+  if (!accessToken) navigateFromRoot("/");
+}
+
 async function loadPage() {
   initializeEvents();
   suspendPageToLoadingState(contentId);
@@ -57,6 +65,7 @@ async function loadPage() {
   renderOrders(orders);
 }
 
+validateUserBeforeLaunchingApp();
 // bind modules to global object
 window.nextOrdersPage = nextOrdersPage;
 window.previousOrdersPage = previousOrdersPage;

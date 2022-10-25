@@ -3,12 +3,11 @@ import {
   DashboardSummaryElement,
   TextElement,
 } from "./elements/index.js";
-import { getDashboardData } from "./modules/index.js";
 import { createChart } from "./modules/chart.js";
 import { ChartStorage } from "./modules/chartConfig.js";
 import { LocalCache } from "../core-modules/localStorage.js";
 import { TableElement } from "./elements/index.js";
-import { navigateFromRoot } from "../core-modules/domHelperFunctions.js";
+import { navigateFromRoot } from "../core-modules/index.js";
 import { logoutFromApp } from "../shared-modules/index.js";
 
 //
@@ -113,15 +112,20 @@ function showDashboardSummary() {
   DashboardSummary.updateSummary(todaySummary, weeklySummary, "$");
 }
 
+function validateUserBeforeLaunchingApp() {
+  const accessToken = LocalCache.getAccessToken();
+  if (!accessToken) navigateFromRoot("/");
+}
+
 // bind to global object
 window.toggleRevenue = toggleRevenue;
 window.navigateFromRoot = navigateFromRoot;
 window.logoutFromApp = logoutFromApp;
 
+validateUserBeforeLaunchingApp();
 //
 window.onload = async function () {
   const d = LocalCache.getDashboardData();
-  console.log(d);
   // const dashboardData = await getDashboardData();
   // LocalCache.saveDashboardData(dashboardData);
   showDashboardSummary();
