@@ -1,5 +1,6 @@
 import {
   ContainerElement,
+  DashboardContentElement,
   DashboardSummaryElement,
   TextElement,
 } from "./elements/index.js";
@@ -90,16 +91,8 @@ function showBestSellers() {
   BestSellersTable.createPageOrders(bestSellers);
 }
 
-function showDashboardSummary() {
-  const { weeklyRevenue } = LocalCache.getDashboardData();
-  const DashboardSummary = new DashboardSummaryElement(
-    "div[id=today-summary] span",
-    "div[id=last-week-summary] span",
-    "div[id=last-month-summary] span"
-  );
-
-  const todayRevenue = weeklyRevenue[6];
-  const lastweekRevenue = weeklyRevenue.reduce(
+function getCummulativeRevenue(revenueData) {
+  return revenueData.reduce(
     (prev, curr) => {
       const orders = prev.orders + curr.orders;
       const total = prev.total + curr.total;
@@ -107,10 +100,39 @@ function showDashboardSummary() {
     },
     { orders: 0, total: 0 }
   );
-  const weeklySummary = `$ ${lastweekRevenue.total} / ${lastweekRevenue.orders} orders`;
+}
+
+function showDashboardSummary() {
+  /*
+1. For last month summary, mean of last week sales was used
+2. For last week summary, cummulative sales for week was used
+3. For last month summary, mean of last year sales was used
+  */
+  const { weeklyRevenue, yearlyRevenue } = LocalCache.getDashboardData();
+  const DashboardSummary = new DashboardSummaryElement(
+    "div[id=today-summary] span",
+    "div[id=last-week-summary] span",
+    "div[id=last-month-summary] span"
+  );
+
+  const cummulativeLastWeekRevenue = getCummulativeRevenue(weeklyRevenue);
+  const todayRevenue = {
+    orders: Math.round(cummulativeLastWeekRevenue.orders / 12),
+    total: Math.round(cummulativeLastWeekRevenue.total / 12),
+  };
+  const cummulativeYearlyRevenue = getCummulativeRevenue(yearlyRevenue);
+  const meanYearlyRevenue = {
+    orders: Math.round(cummulativeYearlyRevenue.orders / 12),
+    total: Math.round(cummulativeYearlyRevenue.total / 12),
+  };
   const todaySummary = `$ ${todayRevenue.total} / ${todayRevenue.orders} orders`;
-  const monthlySummary = "";
-  DashboardSummary.updateSummary(todaySummary, weeklySummary, "$");
+  const lastWeekSummary = `$ ${cummulativeLastWeekRevenue.total} / ${cummulativeLastWeekRevenue.orders} orders`;
+  const lastMonthSumary = `$ ${meanYearlyRevenue.total} / ${meanYearlyRevenue.orders} orders`;
+  DashboardSummary.updateSummary(
+    todaySummary,
+    lastWeekSummary,
+    lastMonthSumary
+  );
 }
 
 function validateUserBeforeLaunchingApp() {
