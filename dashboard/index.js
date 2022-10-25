@@ -3,6 +3,7 @@ import { getDashboardData } from "./modules/index.js";
 import { createChart } from "./modules/chart.js";
 import { ChartStorage } from "./modules/chartConfig.js";
 import { LocalCache } from "../core-modules/localStorage.js";
+import { TableElement } from "./elements/index.js";
 
 //
 const weeklyRevenueChartLabels = [
@@ -58,11 +59,11 @@ function showYearlyRevene() {
 async function toggleRevenue(event) {
   const viewYearlyRevenue = event.target.checked;
   const previousChart = ChartStorage.getCachedChart();
+  destroyChart(previousChart);
   const DashboardRevenueHeaderText = new TextElement(
     "section[id=revenue_section] header h2"
   );
   const CanvasBorderElement = new ContainerElement("div.canvas_border");
-  destroyChart(previousChart);
 
   if (viewYearlyRevenue) {
     CanvasBorderElement.updateStyle({ height: "421.5px" });
@@ -75,7 +76,13 @@ async function toggleRevenue(event) {
   }
 }
 
-function showBestSellers() {}
+function showBestSellers() {
+  const { bestSellers } = LocalCache.getDashboardData();
+  const BestSellersTable = new TableElement(
+    "table[id=best-sellers-table] tbody"
+  );
+  BestSellersTable.createPageOrders(bestSellers);
+}
 
 // bind to global object
 window.toggleRevenue = toggleRevenue;
@@ -83,4 +90,5 @@ window.onload = async function () {
   const dashboardData = await getDashboardData();
   showWeeklyRevenue();
   LocalCache.saveDashboardData(dashboardData);
+  showBestSellers();
 };

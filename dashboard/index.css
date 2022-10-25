@@ -112,6 +112,10 @@ col {
   width: 25%;
 }
 
+tbody > tr {
+  height: 60px;
+}
+
 tr:has(th) {
   height: 50px;
 }
