@@ -2,7 +2,6 @@ import { HttpClient } from "./http.js";
 
 async function fetchDataWithToken(method, token, route) {
   return new Promise(async (res, rej) => {
-    console.log(method);
     const response = await HttpClient[method](route, {
       headers: {
         Authorization: `Bearer ${token}`,

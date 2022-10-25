@@ -21,7 +21,6 @@ async function getOrders(page, searchKeyword) {
     }
     return { orders: orders.orders, totalLength: orders.total };
   } catch (error) {
-    console.log(error.message);
     throw new Error(error.messge);
   }
 }

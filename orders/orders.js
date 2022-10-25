@@ -54,7 +54,6 @@ function validateUserBeforeLaunchingApp() {
 async function loadPage() {
   initializeEvents();
   const { orders, totalLength } = await getOrders(1);
-  console.log(orders);
   OrdersComponentsAPI.setupOrdersPagination(totalLength);
   renderOrders(orders);
 }

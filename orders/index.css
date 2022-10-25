@@ -70,8 +70,23 @@ table {
   width: 100%;
 }
 
+.product_col {
+  width: 50%;
+}
+
+.date_col,
+.price_col {
+  width: 10%;
+}
+
+.status_col {
+  width: 10%;
+}
+
 tbody > tr {
   height: 60px;
+  font-family: light;
+  font-size: 15px;
 }
 
 .table_n_pagination_wrapper {
@@ -92,6 +107,8 @@ tbody > tr {
 tr:has(th) {
   text-align: left;
   height: 40px;
+  font-family: normal;
+  font-size: 15px;
 }
 
 col {
@@ -128,6 +145,8 @@ col {
   display: flex;
   align-items: center;
   column-gap: 3px;
+  font-size: 15px;
+  font-family: normal;
 }
 
 .order_pagination > span {
@@ -137,4 +156,8 @@ col {
 .order_pagination > i {
   font-size: 20px;
   margin-left: 5px;
+}
+
+.fa {
+  cursor: pointer;
 }

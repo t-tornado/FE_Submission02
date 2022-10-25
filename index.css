@@ -26,3 +26,10 @@
   background-color: #b3b3b3;
   border-radius: 5px;
 }
+
+#content header h1 {
+  font-size: 23px;
+  margin-bottom: 10px;
+  font-family: light;
+  color: #000;
+}

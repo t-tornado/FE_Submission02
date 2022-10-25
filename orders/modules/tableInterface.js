@@ -63,7 +63,6 @@ class OrdersComponentsAPI {
       ...Configuration.getPaginationConfiguration(),
       ...update,
     };
-    console.log(updatedPagination);
     Configuration.setPaginationConfiguration(updatedPagination);
     this.#setPaginationIndexElements(updatedPagination);
   };
