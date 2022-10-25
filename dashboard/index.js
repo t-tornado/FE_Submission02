@@ -8,6 +8,8 @@ import { createChart } from "./modules/chart.js";
 import { ChartStorage } from "./modules/chartConfig.js";
 import { LocalCache } from "../core-modules/localStorage.js";
 import { TableElement } from "./elements/index.js";
+import { navigateFromRoot } from "../core-modules/domHelperFunctions.js";
+import { logoutFromApp } from "../shared-modules/index.js";
 
 //
 const weeklyRevenueChartLabels = [
@@ -89,7 +91,7 @@ function showBestSellers() {
 }
 
 function showDashboardSummary() {
-  const { weeklyRevenue, monthlyRevenue } = LocalCache.getDashboardData();
+  const { weeklyRevenue } = LocalCache.getDashboardData();
   const DashboardSummary = new DashboardSummaryElement(
     "div[id=today-summary] span",
     "div[id=last-week-summary] span",
@@ -113,6 +115,10 @@ function showDashboardSummary() {
 
 // bind to global object
 window.toggleRevenue = toggleRevenue;
+window.navigateFromRoot = navigateFromRoot;
+window.logoutFromApp = logoutFromApp;
+
+//
 window.onload = async function () {
   const d = LocalCache.getDashboardData();
   console.log(d);
