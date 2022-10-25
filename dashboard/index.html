@@ -17,17 +17,17 @@
       <div id="content">
         <header><h1>Dashboard</h1></header>
         <section id="order_summary_section">
-          <div class="order_summary_element">
-            <span>Today</span>
-            <span>$1456/9 orders</span>
+          <div class="order_summary_element" id="today-summary">
+            <h3>Today</h6>
+            <span></span>
           </div>
-          <div class="order_summary_element">
-            <span>Last Week</span>
-            <span>$1456/9 orders</span>
+          <div class="order_summary_element" id="last-week-summary">
+            <h3>Last Week</h6>
+            <span></span>
           </div>
-          <div class="order_summary_element">
-            <span>Last Month</span>
-            <span>$1456/9 orders</span>
+          <div class="order_summary_element" id="last-month-summary">
+            <h3>Last Month</h6>
+            <span></span>
           </div>
         </section>
         <section id="revenue_section">
@@ -50,25 +50,29 @@
         </section>
         <section id="best_sellers_section">
           <h2>Bestsellers</h2>
-          <table>
+          <table id="best-sellers-table">
             <colgroup>
               <col span="1" />
               <col span="1" />
               <col span="1" />
               <col span="1" />
             </colgroup>
-            <tr>
-              <th>Product</th>
-              <th>Price</th>
-              <th>#Units Sold</th>
-              <th>Revenue</th>
-            </tr>
-            <tr>
-              <td>Item</td>
-              <td>$50</td>
-              <td>32</td>
-              <td>$120.1</td>
-            </tr>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>#Units Sold</th>
+                <th>Revenue</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Item</td>
+                <td>$50</td>
+                <td>32</td>
+                <td>$120.1</td>
+              </tr>
+            </tbody>
           </table>
         </section>
       </div>

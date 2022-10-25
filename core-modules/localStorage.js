@@ -1,6 +1,7 @@
 export class LocalCache {
   static #refreshTokenKey = "auth-refresh-key";
   static #accessTokenKey = "auth-access-key";
+  static #dashboardDataKey = "dashboard-data-key";
 
   static #saveTokenWithKey(key, token) {
     const tokenData = JSON.stringify(token);
@@ -20,11 +21,19 @@ export class LocalCache {
     LocalCache.#saveTokenWithKey(LocalCache.#accessTokenKey, token);
   }
 
+  static saveDashboardData(data) {
+    LocalCache.#saveTokenWithKey(LocalCache.#dashboardDataKey, data);
+  }
+
   static getRefreshToken() {
     return LocalCache.#getTokenWithKey(LocalCache.#refreshTokenKey);
   }
 
   static getAccessToken() {
     return LocalCache.#getTokenWithKey(LocalCache.#accessTokenKey);
+  }
+
+  static getDashboardData() {
+    return LocalCache.#getTokenWithKey(LocalCache.#dashboardDataKey);
   }
 }

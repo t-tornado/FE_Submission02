@@ -84,10 +84,19 @@ nav > ul > li {
 .order_summary_element {
   display: flex;
   width: 30%;
+  height: fit-content;
   flex-direction: column;
-  row-gap: 10px;
   border: 1px solid #a9a9a9;
-  padding: 5px 30px 5px 10px;
+  padding: 5px;
+}
+
+.order_summary_element h3 {
+  font-weight: normal;
+}
+
+.order_summary_element > span {
+  font-size: 18px;
+  font-weight: 600;
 }
 
 #order_summary_section {
@@ -110,6 +119,10 @@ nav > ul > li {
 
 col {
   width: 25%;
+}
+
+tbody > tr {
+  height: 60px;
 }
 
 tr:has(th) {

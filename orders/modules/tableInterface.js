@@ -1,4 +1,3 @@
-import { SearchInterface } from "./searchInterface.js";
 import { Configuration } from "./configuration.js";
 
 class OrdersComponentsAPI {
@@ -16,7 +15,6 @@ class OrdersComponentsAPI {
   static createPageOrders = (orders) => {
     const tableBody = OrdersComponentsAPI.#getTableBodyElement();
     let bodyHTML = "";
-    console.log(orders);
     orders.forEach((order) => {
       const userFriendlyDate = new Date(order.created_at).toDateString();
       const price = `${order.currency} ${order.total}`;
