@@ -3,6 +3,8 @@ import { OrdersComponentsAPI } from "./modules/tableInterface.js";
 import { getOrders } from "./modules/api.js";
 import { nextOrdersPage, previousOrdersPage } from "./modules/handlers.js";
 import { Configuration } from "./modules/configuration.js";
+import { navigateFromRoot } from "../core-modules/domHelperFunctions.js";
+import { logoutFromApp } from "../shared-modules/index.js";
 
 const contentId = "content";
 
@@ -59,6 +61,8 @@ async function loadPage() {
 window.nextOrdersPage = nextOrdersPage;
 window.previousOrdersPage = previousOrdersPage;
 window.searchOrders = searchOrders;
+window.navigateFromRoot = navigateFromRoot;
+window.logoutFromApp = logoutFromApp;
 
 // Load Page
 loadPage();

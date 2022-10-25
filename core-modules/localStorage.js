@@ -10,7 +10,7 @@ export class LocalCache {
 
   static #getTokenWithKey(key) {
     const token = window.localStorage.getItem(key);
-    return JSON.parse(token ?? "");
+    return token ? JSON.parse(token) : null;
   }
 
   static saveRefreshToken(token) {
@@ -35,5 +35,9 @@ export class LocalCache {
 
   static getDashboardData() {
     return LocalCache.#getTokenWithKey(LocalCache.#dashboardDataKey);
+  }
+
+  static reset() {
+    return window.localStorage.clear();
   }
 }
