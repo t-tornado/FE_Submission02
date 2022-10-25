@@ -9,6 +9,7 @@ import { LocalCache } from "../core-modules/localStorage.js";
 import { TableElement } from "./elements/index.js";
 import { navigateFromRoot } from "../core-modules/index.js";
 import { logoutFromApp } from "../shared-modules/index.js";
+import { getDashboardData } from "./modules/api.js";
 
 //
 const weeklyRevenueChartLabels = [
@@ -125,9 +126,8 @@ window.logoutFromApp = logoutFromApp;
 validateUserBeforeLaunchingApp();
 //
 window.onload = async function () {
-  const d = LocalCache.getDashboardData();
-  // const dashboardData = await getDashboardData();
-  // LocalCache.saveDashboardData(dashboardData);
+  const dashboardData = await getDashboardData();
+  LocalCache.saveDashboardData(dashboardData);
   showDashboardSummary();
   showWeeklyRevenue();
   showBestSellers();

@@ -16,6 +16,7 @@ async function getDashboardData() {
         "refresh"
       );
       LocalCache.saveAccessTokenKey(newToken.access_token);
+      getDashboardData();
     }
     return {
       weeklyRevenue: Object.values(
