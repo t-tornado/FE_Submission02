@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="../index.css" />
     <link rel="stylesheet" href="index.css" />
     <title>Freddy's Candy Shop Dashboard</title>
   </head>
@@ -9,24 +10,28 @@
       <nav>
         <img src="../assets/logo.svg" alt="Logo" />
         <ul>
-          <li onclick="navigateFromRoot('dashboard/index.html')">Dashboard</li>
-          <li onclick="navigateFromRoot('orders/index.html')">Orders</li>
-          <li onclick="logoutFromApp()">Logout</li>
+          <li class="nav" onclick="navigateFromRoot('dashboard/index.html')">
+            Dashboard
+          </li>
+          <li class="nav" onclick="navigateFromRoot('orders/index.html')">
+            Orders
+          </li>
+          <li class="nav" onclick="logoutFromApp()">Logout</li>
         </ul>
       </nav>
       <div id="content">
         <header><h1>Dashboard</h1></header>
         <section id="order_summary_section">
           <div class="order_summary_element" id="today-summary">
-            <h3>Today</h6>
+            <h3>Today</h3>
             <span></span>
           </div>
           <div class="order_summary_element" id="last-week-summary">
-            <h3>Last Week</h6>
+            <h3>Last Week</h3>
             <span></span>
           </div>
           <div class="order_summary_element" id="last-month-summary">
-            <h3>Last Month</h6>
+            <h3>Last Month</h3>
             <span></span>
           </div>
         </section>
@@ -59,20 +64,13 @@
             </colgroup>
             <thead>
               <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>#Units Sold</th>
-                <th>Revenue</th>
+                <th class="product_col">Product</th>
+                <th class="price_col">Price</th>
+                <th class="units_sold_col">#Units Sold</th>
+                <th class="revenue_col">Revenue</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Item</td>
-                <td>$50</td>
-                <td>32</td>
-                <td>$120.1</td>
-              </tr>
-            </tbody>
+            <tbody></tbody>
           </table>
         </section>
       </div>

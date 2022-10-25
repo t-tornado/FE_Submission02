@@ -77,8 +77,13 @@ nav > ul > li {
   padding: 30px 50px;
 }
 
-#content header h1 {
-  margin-bottom: 30px;
+#content header h1,
+#revenue_section header h2,
+#best_sellers_section h2 {
+  font-size: 23px;
+  margin-bottom: 10px;
+  font-family: light;
+  color: #000;
 }
 
 .order_summary_element {
@@ -91,12 +96,15 @@ nav > ul > li {
 }
 
 .order_summary_element h3 {
-  font-weight: normal;
+  font-family: light;
+  font-size: 15px;
 }
 
 .order_summary_element > span {
   font-size: 18px;
   font-weight: 600;
+  letter-spacing: 0.7px;
+  font-family: normal;
 }
 
 #order_summary_section {
@@ -121,12 +129,28 @@ col {
   width: 25%;
 }
 
+.product_col {
+  width: 50%;
+}
+
+.price_col,
+.units_sold_col {
+  width: 10%;
+}
+
+.revenue_col {
+  width: 15%;
+}
+
 tbody > tr {
   height: 60px;
+  font-family: light;
+  font-size: 15px;
 }
 
 tr:has(th) {
   height: 50px;
+  font-family: normal;
 }
 
 tr > th {

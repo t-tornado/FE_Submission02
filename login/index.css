@@ -24,8 +24,9 @@ header {
 }
 
 header > h1 {
-  color: #fff;
-  font-size: 32px;
+  color: black;
+  font-size: 28px;
+  font-family: normal;
 }
 
 header > img {
@@ -51,21 +52,31 @@ input[type="text"],
 input[type="password"],
 button {
   height: 40px;
-  background-color: #fff;
-  padding: 5px;
+  background-color: transparent;
+  padding: 5px 10px;
   border: none;
   margin-top: 5px;
   font-size: 20px;
   cursor: pointer;
+  border: 2px solid #bebebe;
+  color: black;
+  font-family: normal;
+}
+
+button {
+  font-size: 18px;
+  margin-top: 20px;
+  height: 50px;
 }
 
 .loader {
-  border: 5px solid #f3f3f3; /* Light grey */
-  border-top: 5px solid #3498db; /* Blue */
+  border: 2px solid #bebebe; /* Light grey */
+  border-top: 2px solid #fff; /* Blue */
   border-radius: 50%;
   width: 20px;
   height: 20px;
   animation: spin 0.7s linear infinite;
+  margin: auto;
 }
 
 @keyframes spin {
@@ -88,6 +99,8 @@ button {
 .error_message {
   font-size: 18px;
   color: red;
+  font-family: normal;
+  text-align: center;
 }
 
 .hide {

@@ -7,7 +7,6 @@ async function getDashboardData() {
   try {
     const token = LocalCache.getAccessToken();
     dashboardData = await fetchDataWithToken("get", token, `dashboard`);
-    console.log(dashboardData);
     if (dashboardData === "Token has expired") {
       const refreshToken = LocalCache.getRefreshToken();
       const newToken = await fetchDataWithToken(
@@ -16,7 +15,7 @@ async function getDashboardData() {
         "refresh"
       );
       LocalCache.saveAccessTokenKey(newToken.access_token);
-      getDashboardData();
+      return getDashboardData();
     }
     return {
       weeklyRevenue: Object.values(
@@ -28,7 +27,6 @@ async function getDashboardData() {
       bestSellers: Object.values(dashboardData.dashboard.bestsellers),
     };
   } catch (error) {
-    console.log(error.message);
     throw new Error(error.messge);
   }
 }
