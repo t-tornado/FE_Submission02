@@ -12,10 +12,6 @@ import { Configuration } from "./modules/configuration.js";
 const contentId = "content";
 
 // page methods
-function suspendPageToLoadingState(contentId) {
-  const content = document.getElementById(contentId);
-  content.className = "hide";
-}
 
 function renderOrders(orders) {
   const content = document.getElementById("content");
@@ -26,19 +22,18 @@ function renderOrders(orders) {
 // event handlers
 async function onInputChangeHandler(event) {
   const currentValue = event.target.value.trim();
-  if (currentValue === "") await searchOrders();
+  if (currentValue === "") await searchOrders(true);
 }
 
 function initializeEvents() {
   addEvent("input[id=order-search]", "input", onInputChangeHandler);
 }
 
-async function searchOrders() {
+async function searchOrders(triggerFromEvent) {
   const input = document.getElementById("order-search");
   const keyword = input.value.trim();
   const { start } = Configuration.getPaginationConfiguration();
-  if (keyword === "") {
-    // bad for cases where user makes unnecessary clicks.
+  if (triggerFromEvent && keyword === "") {
     const { orders, totalLength } = await getOrders(start);
     OrdersComponentsAPI.setupOrdersPagination(totalLength);
     renderOrders(orders);
@@ -58,7 +53,6 @@ function validateUserBeforeLaunchingApp() {
 
 async function loadPage() {
   initializeEvents();
-  suspendPageToLoadingState(contentId);
   const { orders, totalLength } = await getOrders(1);
   console.log(orders);
   OrdersComponentsAPI.setupOrdersPagination(totalLength);

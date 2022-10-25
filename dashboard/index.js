@@ -1,6 +1,5 @@
 import {
   ContainerElement,
-  DashboardContentElement,
   DashboardSummaryElement,
   TextElement,
 } from "./elements/index.js";
