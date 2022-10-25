@@ -33,6 +33,7 @@ async function searchOrders() {
   const keyword = input.value.trim();
   const { start } = Configuration.getPaginationConfiguration();
   if (keyword === "") {
+    // bad for cases where user makes unnecessary clicks.
     const { orders, totalLength } = await getOrders(start);
     OrdersComponentsAPI.setupOrdersPagination(totalLength);
     renderOrders(orders);
@@ -49,6 +50,7 @@ async function loadPage() {
   initializeEvents();
   suspendPageToLoadingState(contentId);
   const { orders, totalLength } = await getOrders(1);
+  console.log(orders);
   OrdersComponentsAPI.setupOrdersPagination(totalLength);
   renderOrders(orders);
 }
