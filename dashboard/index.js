@@ -1,4 +1,8 @@
-import { ContainerElement, TextElement } from "./elements/index.js";
+import {
+  ContainerElement,
+  DashboardSummaryElement,
+  TextElement,
+} from "./elements/index.js";
 import { getDashboardData } from "./modules/index.js";
 import { createChart } from "./modules/chart.js";
 import { ChartStorage } from "./modules/chartConfig.js";
@@ -84,11 +88,37 @@ function showBestSellers() {
   BestSellersTable.createPageOrders(bestSellers);
 }
 
+function showDashboardSummary() {
+  const { weeklyRevenue, monthlyRevenue } = LocalCache.getDashboardData();
+  const DashboardSummary = new DashboardSummaryElement(
+    "div[id=today-summary] span",
+    "div[id=last-week-summary] span",
+    "div[id=last-month-summary] span"
+  );
+
+  const todayRevenue = weeklyRevenue[6];
+  const lastweekRevenue = weeklyRevenue.reduce(
+    (prev, curr) => {
+      const orders = prev.orders + curr.orders;
+      const total = prev.total + curr.total;
+      return { orders, total };
+    },
+    { orders: 0, total: 0 }
+  );
+  const weeklySummary = `$ ${lastweekRevenue.total} / ${lastweekRevenue.orders} orders`;
+  const todaySummary = `$ ${todayRevenue.total} / ${todayRevenue.orders} orders`;
+  const monthlySummary = "";
+  DashboardSummary.updateSummary(todaySummary, weeklySummary, "$");
+}
+
 // bind to global object
 window.toggleRevenue = toggleRevenue;
 window.onload = async function () {
-  const dashboardData = await getDashboardData();
+  const d = LocalCache.getDashboardData();
+  console.log(d);
+  // const dashboardData = await getDashboardData();
+  // LocalCache.saveDashboardData(dashboardData);
+  showDashboardSummary();
   showWeeklyRevenue();
-  LocalCache.saveDashboardData(dashboardData);
   showBestSellers();
 };

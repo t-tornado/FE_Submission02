@@ -18,9 +18,13 @@ async function getDashboardData() {
       LocalCache.saveAccessTokenKey(newToken.access_token);
     }
     return {
-      weeklyRevenue: dashboardData.dashboard.sales_over_time_week,
-      yearlyRevenue: dashboardData.dashboard.sales_over_time_year,
-      bestSellers: dashboardData.dashboard.bestsellers,
+      weeklyRevenue: Object.values(
+        dashboardData.dashboard.sales_over_time_week
+      ),
+      yearlyRevenue: Object.values(
+        dashboardData.dashboard.sales_over_time_year
+      ),
+      bestSellers: Object.values(dashboardData.dashboard.bestsellers),
     };
   } catch (error) {
     console.log(error.message);
